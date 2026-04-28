@@ -1,0 +1,16 @@
+[package]
+name = "platter_rs"
+version = "0.1.0"
+edition = "2024"
+description = "A templating engine for Scout (.sct) web crawling scripts"
+license = "MIT or Apache-2.0"
+
+[[bin]]
+name = "platter"
+path = "src/main.rs"
+
+[lib]
+name = "platter_rs"
+path = "src/lib.rs"
+
+[dependencies]
