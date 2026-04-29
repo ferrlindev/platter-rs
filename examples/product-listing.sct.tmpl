@@ -1,0 +1,29 @@
+// ecommerce_scraper_template.sct
+// Sample platter-rs template for scraping all sections of https://webscraper.io/test-sites/e-commerce/static
+// Render with platter-rs, e.g., cargo run -- render this.sct --var category="computers/laptops" --var page=1
+// Parameters: base_url, category, page, max_pages, product_selector, name_selector, price_selector, description_selector, rating_selector, max_items, debug, scrape_ratings
+
+{# Optional debug flag #}
+{% if debug %}SCOUT_DEBUG=true{% endif %}
+
+{# Navigate to parameterized URL #}
+goto "{{ base_url | default("https://webscraper.io/test-sites/e-commerce/static") }}/{{ category }}?page={{ page }}"
+
+{# Main scraping loop with parameterized selectors and optional limit #}
+for product in $$"{{ product_selector | default(".col-md-4") }}" {% if max_items %} limit {{ max_items }} {% endif %} do
+    name = $(product)"{{ name_selector | default("h4 > a.title") }}" |> textContent() |> trim()
+    price = $(product)"{{ price_selector | default("h4.pull-right.price") }}" |> textContent() |> trim()
+    description = $(product)"{{ description_selector | default("p.description") }}" |> textContent() |> trim()
+
+    {# Optional rating scraping #}
+    {% if scrape_ratings %}
+    rating = $(product)"{{ rating_selector | default(".ratings") }}" |> attr("data-rating") |> trim()
+    {% endif %}
+
+    scrape {
+        name: name,
+        price: price,
+        description: description,
+        {% if scrape_ratings %}rating: rating,{% endif %}
+    }
+end

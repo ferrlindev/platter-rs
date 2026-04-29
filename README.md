@@ -15,12 +15,19 @@ cargo install --path .
 
 # Render a template
 platter examples/product-listing.sct.tmpl \
-  --var base_url=https://shop.example.com \
-  --var category=laptops \
-  --var row_selector=".product-card" \
-  --var name_selector=".product-name" \
-  --var price_selector=".product-price" \
-  --out product-listing.sct
+  --var base_url="" \
+  --var category=computer/laptops \
+  --var page=1 \
+  --var max_pages="3" \
+  --var debug=true  \
+  --var name_selector="" \
+  --var description_selector="" \
+  --var product_selector="" \
+  --var scrape_ratings=true \
+  --var price_selector="" \
+  --var rating_selector="" \
+  --var max_items=2 \
+  --out examples/product-listing.sct
 
 # Run the rendered script
 scout product-listing.sct
